@@ -137,10 +137,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           branch: dev
           fail-on-quality-gate-error: false
-      - name: Debug SonarCloud API access
-        run: |
-         curl -v -u "${SONAR_TOKEN}:" \
-         "https://sonarcloud.io/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_KEY}"
-        env:
-         SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
-         SONAR_PROJECT_KEY: ${{ env.SONAR_PROJECT_KEY }}
+     
