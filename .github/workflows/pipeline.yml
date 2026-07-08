@@ -120,7 +120,7 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v4
         env:
          github-token: ${{ secrets.GITHUB_TOKEN }}
-         sonar-token: ${{ secrets.SONAR_TOKEN }}
+         sonar-token: ${{ env.SONAR_TOKEN }}
         with:
          args: >
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
