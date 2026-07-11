@@ -126,32 +126,14 @@ jobs:
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
             -Dsonar.java.binaries=target/classes
-      - name: Debug SonarCloud access
-        run: |
-            echo "=== Test 1: Org access ==="
-            curl -s -w "\nHTTP_STATUS:%{http_code}\n" \
-              -u "${{ secrets.SONAR_TOKEN }}:" \
-              "https://sonarcloud.io/api/organizations/search?organizations=${{ secrets.SONAR_ORGANIZATION }}"
-
-            echo "=== Test 2: Project quality gate status ==="
-            curl -s -w "\nHTTP_STATUS:%{http_code}\n" \
-              -u "${{ secrets.SONAR_TOKEN }}:" \
-              "https://sonarcloud.io/api/qualitygates/project_status?projectKey=${{ secrets.SONAR_PROJECT_KEY }}"
-
-            echo "=== Test 3: Token validity check ==="
-            curl -s -w "\nHTTP_STATUS:%{http_code}\n" \
-              -u "${{ secrets.SONAR_TOKEN }}:" \
-              "https://sonarcloud.io/api/authentication/validate"
-
-            echo "=== Test 4: Token length check ==="
-            echo -n "${{ secrets.SONAR_TOKEN }}" | wc -c 
-              - name: SonarCloud Quality Gate Check
-                id: quality-gate
-                uses: phwt/sonarqube-quality-gate-action@v1
-                with:
-            sonar-project-key: ${{ env.SONAR_PROJECT_KEY }}
-            sonar-host-url: https://sonarcloud.io
-            sonar-token: ${{ env.SONAR_TOKEN }}
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            branch: dev
-            continue-on-error: true
+       
+      - name: SonarCloud Quality Gate Check
+        id: quality-gate
+        uses: phwt/sonarqube-quality-gate-action@v1
+        with:
+          sonar-project-key: ${{ env.SONAR_PROJECT_KEY }}
+          sonar-host-url: https://sonarcloud.io
+          sonar-token: ${{ env.SONAR_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
+          continue-on-error: true
